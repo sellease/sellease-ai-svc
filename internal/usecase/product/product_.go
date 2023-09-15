@@ -51,3 +51,29 @@ func (u *productUsecase) GenerateKeywords(ctx context.Context, value string) (re
 
 	return result, err
 }
+
+func (u *productUsecase) TranslateText(ctx context.Context, request request.TranslationRequest) (
+	res response.TranslateTextResponse, err error) {
+
+	res.Name, err = u.productRepo.TranslateText(ctx, request.Name, request.Language)
+	if err != nil {
+		logger.Errorf("error while translating text - %s", err.Error())
+		return res, err
+	}
+	res.Description, err = u.productRepo.TranslateText(ctx, request.Description, request.Language)
+	if err != nil {
+		logger.Errorf("error while translating text - %s", err.Error())
+		return res, err
+	}
+	res.Ingredients, err = u.productRepo.TranslateText(ctx, request.Ingredients, request.Language)
+	if err != nil {
+		logger.Errorf("error while translating text - %s", err.Error())
+		return res, err
+	}
+	res.HowToUse, err = u.productRepo.TranslateText(ctx, request.HowToUse, request.Language)
+	if err != nil {
+		logger.Errorf("error while translating text - %s", err.Error())
+		return res, err
+	}
+	return
+}

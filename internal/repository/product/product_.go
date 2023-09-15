@@ -7,9 +7,12 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"sellease-ai/config"
 	"sellease-ai/internal/entity/models"
 	"sellease-ai/internal/entity/response"
+	"sellease-ai/logger"
+	"strings"
 )
 
 func (r *productRepository) GenerateProductDescription(ctx context.Context, data models.ProductDescriptionRequestData) (
@@ -123,4 +126,55 @@ func (r *productRepository) GenerateKeywords(ctx context.Context, value string) 
 	}
 
 	return result, nil
+}
+
+func (r *productRepository) TranslateText(ctx context.Context, text, target string) (resultTxt string, err error) {
+	// Define the URL
+	reqUrl := config.GetConfig().GoogleTranslateUrl
+
+	payload := url.Values{}
+	payload.Add("q", text)
+	payload.Add("target", target)
+	payload.Add("source", "en")
+
+	encodedPayload := payload.Encode()
+
+	// Create an HTTP client
+	client := &http.Client{}
+
+	// Create an HTTP POST request with the payload
+	req, err := http.NewRequest("POST", reqUrl, strings.NewReader(encodedPayload))
+	if err != nil {
+		logger.WithContext(ctx).Errorf("Error creating request: %s", err.Error())
+		return resultTxt, err
+	}
+
+	// Set headers
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	req.Header.Set("Accept-Encoding", "application/gzip")
+	req.Header.Set("X-RapidAPI-Key", config.GetConfig().RapidAPIKey)
+	req.Header.Set("X-RapidAPI-Host", config.GetConfig().RapidAPITranslateHost)
+
+	// Send the POST request
+	resp, err := client.Do(req)
+	if err != nil {
+		logger.WithContext(ctx).Errorf("Error sending request: %s", err.Error())
+		return
+	}
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		logger.WithContext(ctx).Errorf("Error reading response: %s", err.Error())
+		return
+	}
+
+	var response models.GoogleTranslateRapidApiResp
+	err = json.Unmarshal(body, &response)
+	if err != nil {
+		fmt.Println("Error parsing JSON:", err)
+		return
+	}
+
+	return response.Data.Translations[0].TranslatedText, nil
 }

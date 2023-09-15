@@ -22,3 +22,21 @@ type ProductDescriptionRequestData struct {
 type KeywordData struct {
 	Text string `json:"text"`
 }
+
+type GoogleTranslateRapidApiReq struct {
+	Q      string `json:"q"`
+	Target string `json:"target"`
+	Source string `json:"source"`
+}
+
+type GoogleTranslateRapidApiResp struct {
+	Data Data `json:"data"`
+}
+
+type Data struct {
+	Translations []Translation `json:"translations"`
+}
+
+type Translation struct {
+	TranslatedText string `json:"translatedText"`
+}

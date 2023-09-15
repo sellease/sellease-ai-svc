@@ -16,4 +16,7 @@ func (c *RouterContext) ProductRoutes(r *gin.RouterGroup) {
 		productHandler.HandleGenerateProductDescription)
 
 	r.GET("/keywords", productHandler.HandleGenerateKeywords)
+	r.POST("/translate",
+		middleware.Validate[request.TranslationRequest](consts.TagTranslationRequest),
+		productHandler.HandleTranslateText)
 }

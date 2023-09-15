@@ -21,6 +21,7 @@ const (
 	TagAddUserImageRequest       = "addUserImageRequest"
 	TagProductDescriptionRequest = "productDescriptionRequest"
 	TagFileUploadRequest         = "fileUploadRequest"
+	TagTranslationRequest        = "translationRequest"
 )
 
 // File Processing
