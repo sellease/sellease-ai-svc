@@ -31,6 +31,7 @@ func PrepareRouter(rc *RouterContext) *gin.Engine {
 
 	app := router.Group("sellease-ai")
 	rc.HealthRoutes(app)
+	rc.FileProcessingRoutes(app)
 
 	// user := app.Group("user")
 	// rc.UserRoutes(user)

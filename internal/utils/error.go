@@ -7,10 +7,6 @@ var (
 	ErrInvalidRequest   = errors.New("unable to process request")
 	ErrInvalidParameter = errors.New("invalid parameters")
 
-	// user
-	ErrUserNotFound = errors.New("user not found")
-	ErrInvalidUser  = errors.New("invalid user")
-
 	// database
 	ErrDBFailedToFetchData  = errors.New("error while reading data from db")
 	ErrDBFailedToUpdateData = errors.New("error while updating data to db")
@@ -20,7 +16,8 @@ var (
 	// puzzle
 	ErrPuzzleNotStarted = errors.New("puzzle has not been started")
 
-	// auth
-	ErrMissingAuthorization = errors.New("missing Authorization header or cookie")
-	ErrInActiveUser         = errors.New("user is inactive")
+	// file proccesing
+	ErrDescriptionTooShort       = errors.New("description too short")
+	ErrProductImagesInsufficient = errors.New("atleast four product images must be provided")
+	ErrAddingProductListing      = errors.New("error adding product listing")
 )
