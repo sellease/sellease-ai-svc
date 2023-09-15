@@ -10,12 +10,13 @@ import (
 
 func (u *productUsecase) GenerateProductDesc(ctx context.Context, req request.ProductDescriptionRequest) (
 	result response.Output, err error) {
+	var emptyString string
 
 	data := models.ProductDescriptionRequestData{
-		Brand:       req.Brand,
-		Category:    req.Category,
-		Description: req.Description,
-		Keywords:    req.Keywords,
+		Brand:       emptyString,
+		Category:    emptyString,
+		Description: emptyString,
+		Keywords:    []string{req.Name},
 		MaxTokens:   512,
 		Model:       "chat-sophos-1",
 		N:           1,
