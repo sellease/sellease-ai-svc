@@ -18,3 +18,7 @@ type ProductDescriptionRequestData struct {
 	TargetLang  string   `json:"target_lang"`
 	Temperature float64  `json:"temperature"`
 }
+
+type KeywordData struct {
+	Text string `json:"text"`
+}

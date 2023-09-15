@@ -41,3 +41,12 @@ func (u *productUsecase) GenerateProductDesc(ctx context.Context, req request.Pr
 
 	return result, err
 }
+
+func (u *productUsecase) GenerateKeywords(ctx context.Context, value string) (result []string, err error) {
+	result, err = u.productRepo.GenerateKeywords(ctx, value)
+	if err != nil {
+		logger.Errorf("error while generating keywords - %s", err.Error())
+	}
+
+	return result, err
+}

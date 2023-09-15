@@ -10,6 +10,7 @@ import (
 type UsecaseInterface interface {
 	GenerateProductDesc(ctx context.Context, req request.ProductDescriptionRequest) (
 		result response.Output, err error)
+	GenerateKeywords(ctx context.Context, value string) (result []string, err error)
 }
 
 type productUsecase struct {

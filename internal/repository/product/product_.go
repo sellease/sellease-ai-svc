@@ -70,3 +70,57 @@ func (r *productRepository) GenerateProductDescription(ctx context.Context, data
 
 	return result, nil
 }
+
+func (r *productRepository) GenerateKeywords(ctx context.Context, value string) (result []string, err error) {
+	// Define the URL
+	url := config.GetConfig().RapidAPIKeywordUrl
+
+	// Define query parameters
+	country := "in"
+
+	// Create a query string
+	queryString := fmt.Sprintf("keyword=%s&country=%s", value, country)
+
+	// Create an HTTP client
+	client := &http.Client{}
+
+	// Create an HTTP GET request
+	req, err := http.NewRequest("GET", url+"?"+queryString, nil)
+	if err != nil {
+		fmt.Println("Error creating request:", err)
+		return
+	}
+
+	// Set headers
+	req.Header.Set("X-RapidAPI-Key", config.GetConfig().RapidAPIKey)
+	req.Header.Set("X-RapidAPI-Host", config.GetConfig().RapidAPIKeywordHost)
+
+	// Send the GET request
+	resp, err := client.Do(req)
+	if err != nil {
+		fmt.Println("Error sending request:", err)
+		return
+	}
+	defer resp.Body.Close()
+
+	// Read and print the response body
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println("Error reading response:", err)
+		return
+	}
+
+	// Parse the JSON response into the Response struct
+	var response []models.KeywordData
+	err = json.Unmarshal(body, &response)
+	if err != nil {
+		fmt.Println("Error parsing JSON:", err)
+		return result, err
+	}
+
+	for _, data := range response {
+		result = append(result, data.Text)
+	}
+
+	return result, nil
+}

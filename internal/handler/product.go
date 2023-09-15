@@ -43,3 +43,16 @@ func (h *productHandler) HandleGenerateProductDescription(c *gin.Context) {
 
 	c.JSON(http.StatusOK, utils.Send(productDescription))
 }
+
+func (h *productHandler) HandleGenerateKeywords(c *gin.Context) {
+	ctx := utils.GetContext(c)
+
+	query := c.Query("query")
+	result, err := h.productUseCase.GenerateKeywords(ctx, query)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, utils.Fail(utils.InvalidCredentialErrCode, err.Error()))
+		return
+	}
+
+	c.JSON(http.StatusOK, utils.Send(result))
+}
