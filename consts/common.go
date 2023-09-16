@@ -20,4 +20,25 @@ const (
 	TagProgressPercentageRequest = "progressPercentageRequest"
 	TagAddUserImageRequest       = "addUserImageRequest"
 	TagProductDescriptionRequest = "productDescriptionRequest"
+	TagFileUploadRequest         = "fileUploadRequest"
+	TagTranslationRequest        = "translationRequest"
 )
+
+// File Processing
+func GetFileProcHeaders() []string {
+	return []string{
+		"SKU",
+		"Name",
+		"Stock Limit",
+		"Version",
+		"Retail Price",
+		"Description",
+		"How To Use",
+		"Ingredients",
+		"Product Images",
+		"Height",
+		"Width",
+		"Length",
+		"Weight",
+	}
+}

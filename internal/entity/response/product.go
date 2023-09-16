@@ -15,3 +15,10 @@ type ProductDescriptionResponse struct {
 	Status string                 `json:"status"`
 	Data   ProductDescriptionData `json:"data"`
 }
+
+type TranslateTextResponse struct {
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Ingredients string `json:"ingredients"`
+	HowToUse    string `json:"how_to_use"`
+}

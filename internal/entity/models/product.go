@@ -18,3 +18,25 @@ type ProductDescriptionRequestData struct {
 	TargetLang  string   `json:"target_lang"`
 	Temperature float64  `json:"temperature"`
 }
+
+type KeywordData struct {
+	Text string `json:"text"`
+}
+
+type GoogleTranslateRapidApiReq struct {
+	Q      string `json:"q"`
+	Target string `json:"target"`
+	Source string `json:"source"`
+}
+
+type GoogleTranslateRapidApiResp struct {
+	Data Data `json:"data"`
+}
+
+type Data struct {
+	Translations []Translation `json:"translations"`
+}
+
+type Translation struct {
+	TranslatedText string `json:"translatedText"`
+}

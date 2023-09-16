@@ -10,12 +10,13 @@ import (
 
 func (u *productUsecase) GenerateProductDesc(ctx context.Context, req request.ProductDescriptionRequest) (
 	result response.Output, err error) {
+	var emptyString string
 
 	data := models.ProductDescriptionRequestData{
-		Brand:       req.Brand,
-		Category:    req.Category,
-		Description: req.Description,
-		Keywords:    req.Keywords,
+		Brand:       emptyString,
+		Category:    emptyString,
+		Description: emptyString,
+		Keywords:    []string{req.Name},
 		MaxTokens:   512,
 		Model:       "chat-sophos-1",
 		N:           1,
@@ -40,4 +41,39 @@ func (u *productUsecase) GenerateProductDesc(ctx context.Context, req request.Pr
 	}
 
 	return result, err
+}
+
+func (u *productUsecase) GenerateKeywords(ctx context.Context, value string) (result []string, err error) {
+	result, err = u.productRepo.GenerateKeywords(ctx, value)
+	if err != nil {
+		logger.Errorf("error while generating keywords - %s", err.Error())
+	}
+
+	return result, err
+}
+
+func (u *productUsecase) TranslateText(ctx context.Context, request request.TranslationRequest) (
+	res response.TranslateTextResponse, err error) {
+
+	res.Name, err = u.productRepo.TranslateText(ctx, request.Name, request.Language)
+	if err != nil {
+		logger.Errorf("error while translating text - %s", err.Error())
+		return res, err
+	}
+	res.Description, err = u.productRepo.TranslateText(ctx, request.Description, request.Language)
+	if err != nil {
+		logger.Errorf("error while translating text - %s", err.Error())
+		return res, err
+	}
+	res.Ingredients, err = u.productRepo.TranslateText(ctx, request.Ingredients, request.Language)
+	if err != nil {
+		logger.Errorf("error while translating text - %s", err.Error())
+		return res, err
+	}
+	res.HowToUse, err = u.productRepo.TranslateText(ctx, request.HowToUse, request.Language)
+	if err != nil {
+		logger.Errorf("error while translating text - %s", err.Error())
+		return res, err
+	}
+	return
 }
