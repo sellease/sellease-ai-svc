@@ -11,6 +11,7 @@ import (
 	"sellease-ai/config"
 	"sellease-ai/internal/entity/models"
 	"sellease-ai/internal/entity/response"
+	"sellease-ai/internal/utils"
 	"sellease-ai/logger"
 	"strings"
 )
@@ -162,6 +163,11 @@ func (r *productRepository) TranslateText(ctx context.Context, text, target stri
 		return
 	}
 	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		logger.WithContext(ctx).Errorf("Error in translate text endpoint [status_code: %d]", resp.StatusCode)
+		return resultTxt, utils.ErrTranslation
+	}
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
